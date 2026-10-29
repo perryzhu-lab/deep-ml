@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T16:02:17.461Z",
+  "generated_at": "2026-10-29T14:55:35.187Z",
   "items": {
     "math:7": {
       "kind": "math",
@@ -152,6 +152,19 @@
       "last_pushed_at": "2026-10-28T15:55:35.843Z",
       "language": "python",
       "lines": 8
+    },
+    "problem:11": {
+      "kind": "problem",
+      "id": "11",
+      "title": "Solve Linear Equations using Jacobi Method",
+      "difficulty": "medium",
+      "category": "Linear Algebra",
+      "url": "https://www.deep-ml.com/problems/11",
+      "path": "problems/0011-solve-linear-equations-using-jacobi-method",
+      "first_solved_at": "2026-10-29T14:55:34.495Z",
+      "last_pushed_at": "2026-10-29T14:55:34.495Z",
+      "language": "python",
+      "lines": 28
     }
   }
 }
