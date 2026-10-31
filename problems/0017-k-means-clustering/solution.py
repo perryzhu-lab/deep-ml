@@ -30,4 +30,4 @@ def k_means_clustering(
 
     final_centroids = np.round(initial_centroids, 4)
 
-    return [tuple(row) for row in final_centroids]
+    return [tuple(row) for row in final_centroids.tolist()]
