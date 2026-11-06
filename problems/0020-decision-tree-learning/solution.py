@@ -12,107 +12,69 @@ def calculate_entropy(labels: list) -> float:
         entropy -= p * math.log2(p)
     return entropy
 
+
 # 计算信息增益
 def calculate_information_gain(
     examples: list[dict], attr: str, target_attr: str
 ) -> float:
     # 提取标签
-    labels = [
-        example[target_attr] 
-        for example in examples
-    ]
+    labels = [example[target_attr] for example in examples]
     # 计算初始熵
     H_before = calculate_entropy(labels=labels)
     # 提取当前属性的取值
-    values = set(
-        example[attr] 
-        for example in examples
-    )
+    values = set(example[attr] for example in examples)
     values = sorted(values)
     # 按照属性划分数据集
     H_after = 0
     for value in values:
-        sub_set = [
-            example 
-            for example in examples 
-            if example[attr] == value
-        ]
+        sub_set = [example for example in examples if example[attr] == value]
         weight = len(sub_set) / len(examples)
-        sub_labels=[
-            example[target_attr]
-            for example in sub_set
-        ]
+        sub_labels = [example[target_attr] for example in sub_set]
         sub_entropy = calculate_entropy(sub_labels)
         H_after += weight * sub_entropy
     return H_before - H_after
 
 
 def majority_class(examples: list[dict], target_attr: str) -> str:
-    """Return the majority class. Break ties alphabetically."""
-    # 提取目标标签
-    labels=[
-        example[target_attr]
-        for example in examples
-    ]
-    # 统计数量
-    counts=Counter(labels)
-    # 选择类别
-    result=min(
-        counts,
-        key=lambda x:(-counts[x],x)
-    )
-    return result
+    labels = [example[target_attr] for example in examples]
+    counts = Counter(labels)
+    max_count = max(counts.values())
+    results = [label for label in counts if counts[label] == max_count]
+    return min(results)
 
 
 def learn_decision_tree(
     examples: list[dict], attributes: list[str], target_attr: str
 ) -> dict:
-    # 提取目标标签
-    labels=[
-        example[target_attr]
-        for example in examples
-    ]
-    if len(set(labels))==1:
+    # 判断是否停止划分
+    labels = [example[target_attr] for example in examples]
+    if len(set(labels)) == 1:
         return labels[0]
-    if attributes ==[]:
-        return majority_class(examples,target_attr)
+    if attributes == []:
+        return majority_class(examples, target_attr)
 
-    best_attr=max(
-        attributes,
-        key=lambda attr:calculate_information_gain(
-            examples,attr,target_attr
-        )
-    )
-    # 创建当前节点
+    # 选择最佳划分属性
+    best_attr = None
+    best_gain = float("-inf")
+    for attr in attributes:
+        gain = calculate_information_gain(examples, attr, target_attr)
+        if gain > best_gain:
+            best_gain = gain
+            best_attr = attr
+
+    # 构造决策树节点
     tree = {best_attr: {}}
 
-    # 获取最佳属性的所有取值
-    values = sorted(
-        set(example[best_attr] for example in examples)
-    )
-
-    # 去除当前已经使用的属性
-    remaining_attributes = [
-        attr for attr in attributes
-        if attr != best_attr
-    ]
-
-    # 按照不同属性值划分数据集
+    # 按照属性划分数据
+    values = sorted(set(example[best_attr] for example in examples))
     for value in values:
-        sub_set = [
-            example
-            for example in examples
-            if example[best_attr] == value
-        ]
+        sub_set = [example for example in examples if example[best_attr] == value]
 
         # 递归构建子树
-        subtree = learn_decision_tree(
-            sub_set,
-            remaining_attributes,
-            target_attr
-        )
+        # 去除已使用的属性
+        remaining_attributes = [attr for attr in attributes if attr != best_attr]
+        sub_tree = learn_decision_tree(sub_set, remaining_attributes, target_attr)
 
-        # 将子树保存到当前节点
-        tree[best_attr][value] = subtree
+        tree[best_attr][value] = sub_tree
 
     return tree
