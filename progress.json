@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-09T13:12:51.866Z",
+  "generated_at": "2026-11-09T14:54:42.669Z",
   "items": {
     "math:7": {
       "kind": "math",
@@ -387,6 +387,17 @@
       "last_pushed_at": "2026-11-09T13:12:50.021Z",
       "language": "python",
       "lines": 48
+    },
+    "math:454": {
+      "kind": "math",
+      "id": "454",
+      "title": "Bayesian Linear Regression: Posterior and Posterior Predictive",
+      "difficulty": "medium",
+      "category": "Probabilistic Machine Learning",
+      "url": "https://www.deep-ml.com/math-problems/454",
+      "path": "math/0454-bayesian-linear-regression-posterior-and-posterior-predictive",
+      "first_solved_at": "2026-11-09T14:54:40.586Z",
+      "last_pushed_at": "2026-11-09T14:54:40.586Z"
     }
   }
 }
