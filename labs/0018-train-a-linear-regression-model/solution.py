@@ -7,7 +7,7 @@ def train(X, y, W, b):
 
     # 2. 设置超参数
     lr = 0.01
-    iterations = 1000
+    iterations = 10000
 
     # 复制初始权重
     W = W.copy()
